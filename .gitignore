@@ -137,3 +137,23 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Hardhat
+/contracts/cache
+/contracts/artifacts
+/contracts/typechain-types
+
+# Supabase
+/supabase/.branches
+/supabase/.temp
+/supabase/db/volumes
+
+# IDE settings
+.idea/
+.vscode/

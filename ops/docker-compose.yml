@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  contracts:
+    build:
+      context: ../contracts
+      dockerfile: Dockerfile
+    ports:
+      - "8545:8545"
+    volumes:
+      - ../contracts:/usr/src/app
+    networks:
+      - sovereign_network
+
+  bot:
+    build:
+      context: ../bot
+      dockerfile: Dockerfile
+    env_file:
+      - ../.env
+    volumes:
+      - ../bot:/usr/src/app
+    networks:
+      - sovereign_network
+
+  web:
+    build:
+      context: ../web
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    env_file:
+      - ../.env
+    volumes:
+      - ../web:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - contracts
+    networks:
+      - sovereign_network
+
+networks:
+  sovereign_network:
+    driver: bridge
