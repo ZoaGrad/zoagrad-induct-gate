@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+        python-version: ['3.11']
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install Contracts Dependencies
+      run: npm --prefix contracts install
+
+    - name: Install Bot Dependencies
+      run: pip install -r bot/requirements.txt
+
+    - name: Install Web Dependencies
+      run: npm --prefix web install
+
+    - name: Lint Python code
+      run: |
+        pip install black
+        black --check bot
+
+    - name: Run Contracts Tests
+      run: npm --prefix contracts test
+
+    - name: Build Web App
+      # This will also run linting for the web app
+      run: npm --prefix web run build
