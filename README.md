@@ -56,9 +56,9 @@ To begin your journey as a contributor, follow these steps:
         *   `npm run dev:web`
         *   `npm run dev:bot`
 
-5.  **Push database schema (if you have Supabase CLI installed):**
+5.  **Push database schema (requires the Supabase CLI):**
     ```bash
-    supabase db push
+    supabase db push --db-url "$DATABASE_URL"
     ```
 
 ## Contributing
